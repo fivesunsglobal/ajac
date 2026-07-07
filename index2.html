@@ -1,0 +1,208 @@
+Here is the single-page HTML built precisely to your updated content architecture and the "Direction D: Signal detection" visual principles.
+
+To align with your design strategy, the code is strictly typography-led and uses the light theme (`#F7FAF8`) as the default for the firm's calm, precise posture. The dark "threat" register (`#13231F`) is intentionally reserved for the hero section (naming the business risk directly) and the contact footer. The magenta accent (`#C13C7A`) is used sparingly for high-contrast signals, such as buttons and section markers, ensuring the firm retains its analytical rigor without looking like a "vendor selling fear".
+
+I have swapped the font from *Jost* to *Inter* to provide clean authority and structured the "Approach" and "Team" sections to be minimal and text-driven, utilizing borders and highlights as "editorial markup" instead of standard web illustrations.
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AJAC Info Integrity</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --primary: #1F3B36;
+    --accent: #C13C7A;
+    --bg-light: #F7FAF8;
+    --dark: #13231F;
+  }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Inter', sans-serif; background: var(--bg-light); color: var(--primary); font-size: 17px; line-height: 1.7; }
+
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.25rem 4rem;
+    background: rgba(247, 250, 248, 0.95); backdrop-filter: blur(8px);
+    border-bottom: 1px solid rgba(31, 59, 54, 0.1);
+  }
+  .nav-logo { font-family: 'Inter', sans-serif; font-size: 1rem; font-weight: 700; letter-spacing: 0.1em; color: var(--primary); text-decoration: none; text-transform: uppercase; }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a { font-family: 'Inter', sans-serif; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--primary); text-decoration: none; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--accent); }
+
+  /* Dark Threat Register */
+  #hero {
+    min-height: 100vh; display: flex; flex-direction: column;
+    justify-content: center; align-items: flex-start; text-align: left;
+    padding: 8rem 4rem 4rem; background: var(--dark); color: var(--bg-light);
+  }
+  .hero-content { max-width: 900px; opacity: 0; animation: fadeUp 1s ease forwards 0.2s; }
+  .hero-headline {
+    font-family: 'Inter', sans-serif; font-size: clamp(3rem, 6vw, 5rem);
+    font-weight: 700; color: var(--bg-light); line-height: 1.1; letter-spacing: -0.02em;
+    margin-bottom: 2rem;
+  }
+  .hero-tagline {
+    font-family: 'Inter', sans-serif; font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+    font-weight: 400; color: rgba(247, 250, 248, 0.8); line-height: 1.5;
+    margin-bottom: 3rem; max-width: 700px;
+  }
+  .hero-cta {
+    display: inline-block; padding: 1rem 2.5rem; background: var(--accent); color: var(--bg-light);
+    font-family: 'Inter', sans-serif; font-size: 0.85rem; font-weight: 700; letter-spacing: 0.15em;
+    text-transform: uppercase; text-decoration: none; border-radius: 2px; transition: background 0.2s;
+  }
+  .hero-cta:hover { background: #d84589; }
+
+  @keyframes fadeUp { from{opacity:0;transform:translateY(16px);} to{opacity:1;transform:translateY(0);} }
+
+  section { padding: 8rem 4rem; max-width: 1200px; margin: 0 auto; }
+  .section-label {
+    font-family: 'Inter', sans-serif; font-size: 0.85rem; font-weight: 700;
+    letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent);
+    margin-bottom: 3rem; display: flex; align-items: center; gap: 1rem;
+  }
+  .section-label::after { content: ''; height: 1px; flex-grow: 1; background: rgba(31, 59, 54, 0.15); }
+
+  /* Approach Grid - Typography as Imagery */
+  .approach-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 4rem; }
+  .approach-item h3 { font-size: 1.5rem; font-weight: 600; color: var(--primary); margin-bottom: 1rem; }
+  .approach-item p { font-size: 1.1rem; font-weight: 400; color: rgba(31, 59, 54, 0.8); line-height: 1.6; }
+  .approach-highlight { display: inline-block; background: var(--primary); color: var(--bg-light); padding: 0.2rem 0.5rem; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 1rem; }
+
+  /* Team Layout */
+  .team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 3rem; }
+  .team-member { border-left: 2px solid var(--accent); padding-left: 1.5rem; }
+  .team-name { font-size: 1.25rem; font-weight: 700; color: var(--primary); margin-bottom: 0.5rem; }
+  .team-title { font-size: 0.9rem; font-weight: 500; color: rgba(31, 59, 54, 0.7); line-height: 1.5; }
+
+  /* Contact / Dark Register */
+  #contact-section { background: var(--dark); color: var(--bg-light); padding: 8rem 4rem; }
+  #contact-section .section-label { color: var(--accent); }
+  #contact-section .section-label::after { background: rgba(247, 250, 248, 0.15); }
+  .contact-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; }
+  @media (max-width: 768px) { .contact-inner { grid-template-columns: 1fr; } }
+  .contact-info h2 { font-size: 2.5rem; font-weight: 600; margin-bottom: 1.5rem; line-height: 1.2; }
+  .contact-info a { color: var(--accent); text-decoration: none; font-weight: 500; font-size: 1.25rem; }
+  .contact-info a:hover { text-decoration: underline; }
+
+  .form-field { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1.5rem; }
+  .form-field label { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(247, 250, 248, 0.6); }
+  .form-field input, .form-field textarea { background: rgba(247, 250, 248, 0.05); border: 1px solid rgba(247, 250, 248, 0.2); border-radius: 2px; padding: 1rem; color: var(--bg-light); font-family: 'Inter', sans-serif; font-size: 1rem; outline: none; transition: border-color 0.2s; width: 100%; }
+  .form-field input:focus, .form-field textarea:focus { border-color: var(--accent); }
+  .form-field textarea { resize: vertical; min-height: 120px; }
+  .submit-btn { padding: 1rem 2.5rem; background: var(--accent); color: var(--bg-light); font-family: 'Inter', sans-serif; font-size: 0.85rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; border: none; border-radius: 2px; cursor: pointer; transition: background 0.2s; }
+  .submit-btn:hover { background: #d84589; }
+
+  footer { background: #0b1512; text-align: center; padding: 2.5rem; font-family: 'Inter', sans-serif; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(247, 250, 248, 0.4); }
+
+  @media (max-width: 640px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    #hero { padding: 8rem 1.5rem 4rem; }
+    section, #contact-section { padding: 5rem 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#hero" class="nav-logo">AJAC Info Integrity</a>
+  <ul class="nav-links">
+    <li><a href="#approach">Approach</a></li>
+    <li><a href="#team">Team</a></li>
+    <li><a href="#contact-section">Contact</a></li>
+  </ul>
+</nav>
+
+<div id="hero">
+  <div class="hero-content">
+    <h1 class="hero-headline">Disinformation Is Now a Business Risk.</h1>
+    <p class="hero-tagline">We help businesses prepare for and defend themselves from narrative attacks.</p>
+    <a href="#contact-section" class="hero-cta">Inquire About Engagement</a>
+  </div>
+</div>
+
+<section id="approach">
+  <div class="section-label">Operational Rigor</div>
+  <div class="approach-grid">
+    <div class="approach-item">
+      <span class="approach-highlight">Phase 1</span>
+      <h3>Detect</h3>
+      <p>Identifying narrative velocity and adversarial intent across complex information environments before they escalate into structural crises.</p>
+    </div>
+    <div class="approach-item">
+      <span class="approach-highlight">Phase 2</span>
+      <h3>Assess</h3>
+      <p>Moving from ad hoc reaction to structured severity assessment. We establish decision discipline to clarify what is known, inferred, and uncertain.</p>
+    </div>
+    <div class="approach-item">
+      <span class="approach-highlight">Phase 3</span>
+      <h3>Respond</h3>
+      <p>Building the playbook for proportionate, disciplined action that maintains your organizational credibility and neutralizes the threat.</p>
+    </div>
+  </div>
+</section>
+
+<section id="team">
+  <div class="section-label">Our Team</div>
+  <div class="team-grid">
+    <div class="team-member">
+      <div class="team-name">Dr. Adela Levis</div>
+      <div class="team-title">Architect of Counter-Disinformation Capabilities</div>
+    </div>
+    <div class="team-member">
+      <div class="team-name">Adam Fivenson</div>
+      <div class="team-title">Principal, Five Suns Global Consulting</div>
+    </div>
+    <div class="team-member">
+      <div class="team-name">Jen Rosiere Reynolds</div>
+      <div class="team-title">Director, The Accelerator at Princeton University</div>
+    </div>
+    <div class="team-member">
+      <div class="team-name">Dr. Chris Beall</div>
+      <div class="team-title">President, QuietWire</div>
+    </div>
+  </div>
+</section>
+
+<div id="contact-section">
+  <div class="section-label">Engage</div>
+  <div class="contact-inner">
+    <div class="contact-info">
+      <h2>Ready to build your organization's resilience?</h2>
+      <p style="margin-bottom: 2rem; color: rgba(247, 250, 248, 0.7); line-height: 1.6;">Let’s connect to discuss how we can support your specific operating environment and establish a structured response to narrative threats.</p>
+      <a href="mailto:info@ajac.global">info@ajac.global</a>
+    </div>
+    <!-- Make sure to update the action attribute with your preferred form handler -->
+    <form action="#" method="POST">
+      <div class="form-field">
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name" required placeholder="Your name">
+      </div>
+      <div class="form-field">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required placeholder="your@email.com">
+      </div>
+      <div class="form-field">
+        <label for="message">Message</label>
+        <textarea id="message" name="message" required placeholder="Tell us about your operating environment"></textarea>
+      </div>
+      <button type="submit" class="submit-btn">Start a Conversation</button>
+    </form>
+  </div>
+</div>
+
+<footer>
+  &copy; 2026 AJAC Info Integrity &nbsp;&middot;&nbsp; info@ajac.global
+</footer>
+
+</body>
+</html>
+
+```
