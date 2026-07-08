@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AJAC Info Integrity</title>
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --primary: #1F3B36;
+    --accent: #C13C7A;
+    --bg-light: #F7FAF8;
+    --dark: #13231F;
+    --text-muted-dark: rgba(31, 59, 54, 0.75);
+    --text-muted-light: rgba(247, 250, 248, 0.75);
+  }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Jost', sans-serif; background: var(--bg-light); color: var(--primary); font-size: 17px; line-height: 1.7; }
+
+  /* Navigation */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.25rem 4rem;
+    background: rgba(247, 250, 248, 0.95); backdrop-filter: blur(8px);
+    border-bottom: 1px solid rgba(31, 59, 54, 0.1);
+  }
+  .nav-logo { font-family: 'Jost', sans-serif; font-size: 1.1rem; font-weight: 700; letter-spacing: 0.15em; color: var(--primary); text-decoration: none; text-transform: uppercase; }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a { font-family: 'Jost', sans-serif; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-muted-dark); text-decoration: none; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--accent); }
+
+  /* Hero Section - Centered Architecture */
+  #hero {
+    min-height: 100vh; display: flex; flex-direction: column;
+    justify-content: center; align-items: center; text-align: center;
+    padding: 8rem 2rem 0; background: var(--dark); overflow: hidden;
+  }
+  .hero-headline {
+    font-family: 'Jost', sans-serif; font-size: clamp(2.5rem, 5vw, 4.5rem);
+    font-weight: 700; color: var(--bg-light); line-height: 1.1; letter-spacing: 0.02em;
+    margin-bottom: 2rem; max-width: 900px;
+    opacity: 0; animation: fadeUp 1s ease forwards 0.3s;
+  }
+  /* Small Restrained Accent */
+  .hero-accent-bar { width: 80px; height: 4px; background: var(--accent); flex-shrink: 0; opacity: 0; animation: fadeUp 0.8s ease forwards 0.6s; margin-bottom: 2rem; }
+  .hero-tagline {
+    font-family: 'Jost', sans-serif; font-size: clamp(1.2rem, 2.2vw, 1.5rem);
+    font-weight: 300; color: var(--text-muted-light); letter-spacing: 0.05em; 
+    max-width: 700px; opacity: 0; animation: fadeUp 1s ease forwards 0.9s;
+    margin-bottom: 4rem;
+  }
+  
+  /* Scroll Hint Animation */
+  .scroll-hint { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; opacity: 0; animation: fadeUp 1s ease forwards 1.5s; padding-bottom: 2.5rem; }
+  .scroll-hint span { font-family: 'Jost', sans-serif; font-size: 0.65rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--text-muted-light); }
+  .scroll-arrow { width: 1px; height: 40px; background: linear-gradient(to bottom, var(--accent), transparent); animation: scrollPulse 2s ease-in-out infinite; }
+  
+  @keyframes scrollPulse { 0%,100%{opacity:0.3;} 50%{opacity:1;} }
+  @keyframes fadeUp { from{opacity:0;transform:translateY(20px);} to{opacity:1;transform:translateY(0);} }
+
+  /* Standard Sections - Centered Architecture */
+  section { padding: 7rem 2rem; max-width: 900px; margin: 0 auto; }
+  .section-label {
+    font-family: 'Jost', sans-serif; font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--primary); margin-bottom: 2rem; line-height: 1; text-align: center;
+  }
+  .section-text {
+    font-family: 'Jost', sans-serif; font-size: clamp(1.15rem, 2vw, 1.35rem);
+    font-weight: 400; line-height: 1.8; color: var(--primary); text-align: center;
+  }
+  .section-text p { margin-bottom: 1.5rem; }
+  .divider { max-width: 820px; margin: 0 auto; height: 1px; background: rgba(31, 59, 54, 0.15); }
+
+  /* Grid Layouts */
+  .grid-2x2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 4rem 3rem;
+    margin-top: 3.5rem;
+  }
+  
+  .grid-3-col {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    margin-top: 3.5rem;
+  }
+
+  /* What We Do Cards */
+  .what-item {
+    background: var(--primary);
+    padding: 2.5rem;
+    border-top: 3px solid var(--accent);
+    border-radius: 2px;
+    text-align: left;
+  }
+  .what-item h3 {
+    font-size: 1.35rem; font-weight: 600; color: var(--bg-light);
+    margin-bottom: 1rem; letter-spacing: 0.05em; text-transform: uppercase;
+  }
+  .what-item p {
+    font-size: 1.05rem; font-weight: 300; color: var(--text-muted-light); line-height: 1.6;
+  }
+
+  /* Our Team - Centered Architecture */
+  #team { max-width: 1000px; }
+  .team-item {
+    display: flex; flex-direction: column; align-items: center; text-align: center;
+  }
+  .team-photo {
+    width: 160px; height: 160px;
+    border-radius: 50%; object-fit: cover;
+    border: 2px solid rgba(31, 59, 54, 0.1);
+    margin-bottom: 1.5rem; background: rgba(31, 59, 54, 0.05);
+    filter: grayscale(20%);
+  }
+  .team-name {
+    font-size: 1.4rem; font-weight: 600; letter-spacing: 0.08em; 
+    text-transform: uppercase; color: var(--primary); margin-bottom: 0.25rem;
+  }
+  .team-title {
+    font-size: 0.85rem; font-weight: 600; letter-spacing: 0.15em; 
+    text-transform: uppercase; color: var(--accent); margin-bottom: 1rem;
+  }
+  .team-bio {
+    font-size: 1rem; font-weight: 400; line-height: 1.6; color: var(--text-muted-dark);
+  }
+
+  /* Contact Section */
+  #contact { background: var(--primary); padding: 7rem 2rem; }
+  #contact .inner { max-width: 820px; margin: 0 auto; text-align: center; }
+  .contact-heading { font-family: 'Jost', sans-serif; font-size: clamp(1.4rem, 3vw, 2rem); font-weight: 300; color: var(--bg-light); margin-bottom: 2.5rem; letter-spacing: 0.05em; line-height: 1.4;}
+  
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem; text-align: left; }
+  .form-field { display: flex; flex-direction: column; gap: 0.5rem; }
+  .form-field label { font-family: 'Jost', sans-serif; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-muted-light); }
+  .form-field input, .form-field textarea { background: rgba(247, 250, 248, 0.05); border: 1px solid rgba(247, 250, 248, 0.2); border-radius: 2px; padding: 1rem; color: var(--bg-light); font-family: 'Jost', sans-serif; font-size: 1rem; outline: none; transition: border-color 0.2s; width: 100%; }
+  .form-field input:focus, .form-field textarea:focus { border-color: var(--accent); }
+  .form-field textarea { resize: vertical; min-height: 130px; }
+  .form-full { grid-column: 1 / -1; }
+  
+  .submit-btn { margin-top: 1.5rem; padding: 1rem 3rem; background: var(--accent); color: var(--bg-light); font-family: 'Jost', sans-serif; font-size: 0.85rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; border: none; border-radius: 2px; cursor: pointer; transition: background 0.2s; }
+  .submit-btn:hover { background: #A9336A; }
+
+  footer { background: var(--dark); text-align: center; padding: 2.5rem; font-family: 'Jost', sans-serif; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(247, 250, 248, 0.3); }
+
+  /* Mobile Responsiveness */
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    section { padding: 5rem 1.5rem; }
+    .grid-2x2, .grid-3-col { grid-template-columns: 1fr; gap: 2.5rem; margin-top: 2.5rem; }
+    .form-row { grid-template-columns: 1fr; gap: 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#hero" class="nav-logo">AJAC Info Integrity</a>
+  <ul class="nav-links">
+    <li><a href="#why">Why</a></li>
+    <li><a href="#who">Who</a></li>
+    <li><a href="#what">What</a></li>
+    <li><a href="#team">Team</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<div id="hero">
+  <h1 class="hero-headline">Disinformation is Now a Business Risk</h1>
+  <div class="hero-accent-bar"></div>
+  <p class="hero-tagline">We help businesses prepare for and defend themselves from narrative attacks</p>
+  
+  <div class="scroll-hint">
+    <span>Scroll</span>
+    <div class="scroll-arrow"></div>
+  </div>
+</div>
+
+<section id="why">
+  <div class="section-label">Why AJAC Exists</div>
+  <div class="section-text">
+    <p>The existing toolkit - public relations, cybersecurity, and social monitoring - was built for a different era.</p>
+    <p>In the last decade, AI-powered manipulation, aggressive geopolitical actors, a collapse in trust, and coordinated cross-platform operations have created a threat landscape that no existing solution fully addresses.</p>
+    <p>At the same time, mis/disinformation is now the World Economic Forum’s #2 global short-term risk — above even economic shocks. Every business is exposed.</p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section id="who">
+  <div class="section-label">Who We Work With</div>
+  <div class="section-text">
+    <p>We partner with all types and sizes of businesses to help them build resilience to disinformation. Financial institutions, energy providers, industry associations, and other high-stakes organizations exposed to geopolitical, social, or synthetic-media threats.</p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section id="what">
+  <div class="section-label">What We Do</div>
+  <div class="grid-3-col">
+    <div class="what-item">
+      <h3>Audit</h3>
+      <p>Information risk audit to identify vulnerabilities to information manipulation and current capabilities.</p>
+    </div>
+    <div class="what-item">
+      <h3>Build</h3>
+      <p>Create systems, triage and decision thresholds, map response pathways, and training.</p>
+    </div>
+    <div class="what-item">
+      <h3>Connect</h3>
+      <p>Cross-functional integration of a network of communications, legal, cyber, security, policy, risk, and government experts.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section id="team">
+  <div class="section-label">Our Team</div>
+  <div class="grid-2x2">
+    <div class="team-item">
+      <img src="adelal.png" alt="Dr. Adela Levis" class="team-photo">
+      <div class="team-name">Dr. Adela Levis</div>
+      <div class="team-bio">A key architect of counter-disinformation capabilities in national security, advising governments and NGOs on information resilience and strategic communications.</div>
+    </div>
+    <div class="team-item">
+      <img src="adamf.png" alt="Adam Fivenson" class="team-photo">
+      <div class="team-name">Adam Fivenson</div>
+      <div class="team-title">Principal, Five Suns Global Consulting</div>
+      <div class="team-bio">Non-Resident Fellow at American University's Center for Security, Innovation and New Technology. Expert in AI tools for strategic communications and translating research into action.</div>
+    </div>
+    <div class="team-item">
+      <img src="jenrr.png" alt="Jen Rosiere Reynolds" class="team-photo">
+      <div class="team-name">Jen Rosiere Reynolds</div>
+      <div class="team-title">Director, The Accelerator</div>
+      <div class="team-bio">Director of The Accelerator at Princeton University. A former intelligence officer for special operations, specializing in large-scale monitoring and decision-making under uncertainty.</div>
+    </div>
+    <div class="team-item">
+      <img src="chrisb.png" alt="Dr. Chris Beall" class="team-photo">
+      <div class="team-name">Dr. Chris Beall</div>
+      <div class="team-title">President, QuietWire</div>
+      <div class="team-bio">Chief Relationship Officer of the DISARM Foundation. Bridges policy, technology, and practitioner networks to build institutional resilience.</div>
+    </div>
+  </div>
+</section>
+
+<div id="contact">
+  <div class="inner">
+    <div class="section-label" style="color: var(--bg-light);">Connect</div>
+    <div class="contact-heading">Ready to build your resilience?<br>Let’s connect.</div>
+    <form action="#" method="POST">
+      <div class="form-row">
+        <div class="form-field">
+          <label for="name">Name</label>
+          <input type="text" id="name" name="name" required placeholder="Your name">
+        </div>
+        <div class="form-field">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" required placeholder="your@email.com">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-field form-full">
+          <label for="message">Message</label>
+          <textarea id="message" name="message" required placeholder="Tell us about your operating environment"></textarea>
+        </div>
+      </div>
+      <button type="submit" class="submit-btn">Send Message</button>
+    </form>
+  </div>
+</div>
+
+<footer>
+  &copy; 2026 AJAC Info Integrity &nbsp;&middot;&nbsp; info@ajac.global
+</footer>
+
+</body>
+</html>
