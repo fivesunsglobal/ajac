@@ -12,8 +12,8 @@
     --accent: #A13D2C;
     --bg-light: #F8F7F4;
     --dark: #13243B;
-    --text-muted: rgba(31, 58, 95, 0.7);
-    --text-muted-light: rgba(248, 247, 244, 0.7);
+    --text-muted-dark: rgba(31, 58, 95, 0.75);
+    --text-muted-light: rgba(248, 247, 244, 0.75);
   }
   html { scroll-behavior: smooth; }
   body { font-family: 'Jost', sans-serif; background: var(--bg-light); color: var(--primary); font-size: 17px; line-height: 1.7; }
@@ -28,98 +28,90 @@
   }
   .nav-logo { font-family: 'Jost', sans-serif; font-size: 1.1rem; font-weight: 700; letter-spacing: 0.15em; color: var(--primary); text-decoration: none; text-transform: uppercase; }
   .nav-links { display: flex; gap: 2.5rem; list-style: none; }
-  .nav-links a { font-family: 'Jost', sans-serif; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .nav-links a { font-family: 'Jost', sans-serif; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-muted-dark); text-decoration: none; transition: color 0.2s; }
   .nav-links a:hover { color: var(--accent); }
 
-  /* Hero Section - Dark Civic Anchor */
+  /* Hero Section - Centered Architecture */
   #hero {
-    min-height: 90vh; display: flex; flex-direction: column;
-    justify-content: center; align-items: flex-start; text-align: left;
-    padding: 8rem 4rem 0; background: var(--dark); color: var(--bg-light);
+    min-height: 100vh; display: flex; flex-direction: column;
+    justify-content: center; align-items: center; text-align: center;
+    padding: 8rem 2rem 0; background: var(--dark); overflow: hidden;
   }
-  .hero-content { max-width: 900px; }
   .hero-headline {
     font-family: 'Jost', sans-serif; font-size: clamp(2.5rem, 5vw, 4.5rem);
     font-weight: 700; color: var(--bg-light); line-height: 1.1; letter-spacing: 0.02em;
-    margin-bottom: 1.5rem;
-    opacity: 0; animation: fadeUp 1s ease forwards 0.2s;
+    margin-bottom: 2rem; max-width: 900px;
+    opacity: 0; animation: fadeUp 1s ease forwards 0.3s;
   }
+  /* Small Restrained Accent */
+  .hero-accent-bar { width: 80px; height: 4px; background: var(--accent); flex-shrink: 0; opacity: 0; animation: fadeUp 0.8s ease forwards 0.6s; margin-bottom: 2rem; }
   .hero-tagline {
     font-family: 'Jost', sans-serif; font-size: clamp(1.2rem, 2.2vw, 1.5rem);
     font-weight: 300; color: var(--text-muted-light); letter-spacing: 0.05em; 
-    max-width: 700px; opacity: 0; animation: fadeUp 1s ease forwards 0.5s;
-    margin-bottom: 3rem;
+    max-width: 700px; opacity: 0; animation: fadeUp 1s ease forwards 0.9s;
+    margin-bottom: 4rem;
   }
   
-  .hero-cta {
-    display: inline-block; padding: 1rem 2.5rem; background: var(--accent); color: var(--bg-light);
-    font-family: 'Jost', sans-serif; font-size: 0.85rem; font-weight: 600; letter-spacing: 0.15em;
-    text-transform: uppercase; text-decoration: none; border-radius: 2px; transition: background 0.2s;
-    opacity: 0; animation: fadeUp 1s ease forwards 0.8s;
-  }
-  .hero-cta:hover { background: #b84734; }
-
+  /* Scroll Hint Animation */
+  .scroll-hint { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; opacity: 0; animation: fadeUp 1s ease forwards 1.5s; padding-bottom: 2.5rem; }
+  .scroll-hint span { font-family: 'Jost', sans-serif; font-size: 0.65rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--text-muted-light); }
+  .scroll-arrow { width: 1px; height: 40px; background: linear-gradient(to bottom, var(--accent), transparent); animation: scrollPulse 2s ease-in-out infinite; }
+  
+  @keyframes scrollPulse { 0%,100%{opacity:0.3;} 50%{opacity:1;} }
   @keyframes fadeUp { from{opacity:0;transform:translateY(20px);} to{opacity:1;transform:translateY(0);} }
 
-  /* Standard Sections */
-  section { padding: 6rem 4rem; max-width: 1100px; margin: 0 auto; }
+  /* Standard Sections - Centered Architecture */
+  section { padding: 7rem 2rem; max-width: 900px; margin: 0 auto; }
   .section-label {
-    font-family: 'Jost', sans-serif; font-size: 0.9rem;
-    font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase;
-    color: var(--primary); margin-bottom: 2rem; line-height: 1; 
-    border-left: 3px solid var(--accent); padding-left: 1rem;
+    font-family: 'Jost', sans-serif; font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--primary); margin-bottom: 2rem; line-height: 1; text-align: center;
   }
   .section-text {
     font-family: 'Jost', sans-serif; font-size: clamp(1.15rem, 2vw, 1.35rem);
-    font-weight: 400; line-height: 1.8; color: var(--primary); max-width: 900px;
+    font-weight: 400; line-height: 1.8; color: var(--primary); text-align: center;
   }
   .section-text p { margin-bottom: 1.5rem; }
-  
-  /* Asymmetric structural dividers */
-  .divider { max-width: 100%; height: 1px; background: rgba(31, 58, 95, 0.1); margin: 0 4rem; }
+  .divider { max-width: 820px; margin: 0 auto; height: 1px; background: rgba(31, 58, 95, 0.15); }
 
-  /* 3-Column Grid for 'What We Do' */
-  .grid-3 {
+  /* 2x2 Grid Layouts */
+  .grid-2x2 {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 3rem;
-    margin-top: 3rem;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 4rem 3rem;
+    margin-top: 3.5rem;
   }
 
+  /* What We Do Cards */
   .what-item {
-    background: #ffffff;
+    background: var(--primary);
     padding: 2.5rem;
-    border: 1px solid rgba(31, 58, 95, 0.1);
-    border-top: 3px solid var(--primary);
+    border-top: 3px solid var(--accent);
+    border-radius: 2px;
+    text-align: left;
   }
   .what-item h3 {
-    font-size: 1.35rem; font-weight: 600; color: var(--primary);
+    font-size: 1.35rem; font-weight: 600; color: var(--bg-light);
     margin-bottom: 1rem; letter-spacing: 0.05em; text-transform: uppercase;
   }
   .what-item p {
-    font-size: 1.05rem; font-weight: 400; color: var(--text-muted); line-height: 1.6;
+    font-size: 1.05rem; font-weight: 300; color: var(--text-muted-light); line-height: 1.6;
   }
 
-  /* 2x2 Grid Layouts for 'Team' */
-  .grid-2x2 {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-    gap: 4rem 3rem;
-    margin-top: 3rem;
-  }
-
-  /* Our Team */
+  /* Our Team - Centered Architecture */
+  #team { max-width: 1000px; }
   .team-item {
-    display: flex; flex-direction: column; align-items: flex-start; text-align: left;
+    display: flex; flex-direction: column; align-items: center; text-align: center;
   }
   .team-photo {
-    width: 140px; height: 140px;
+    width: 160px; height: 160px;
     border-radius: 50%; object-fit: cover;
+    border: 2px solid rgba(31, 58, 95, 0.1);
     margin-bottom: 1.5rem; background: #eaeaec;
-    filter: grayscale(20%); /* Adds to the desaturated civic feel */
+    filter: grayscale(20%);
   }
   .team-name {
-    font-size: 1.4rem; font-weight: 600; letter-spacing: 0.05em; 
+    font-size: 1.4rem; font-weight: 600; letter-spacing: 0.08em; 
     text-transform: uppercase; color: var(--primary); margin-bottom: 0.25rem;
   }
   .team-title {
@@ -127,37 +119,34 @@
     text-transform: uppercase; color: var(--accent); margin-bottom: 1rem;
   }
   .team-bio {
-    font-size: 1.05rem; font-weight: 400; line-height: 1.6; color: var(--text-muted);
+    font-size: 1rem; font-weight: 400; line-height: 1.6; color: var(--text-muted-dark);
   }
 
   /* Contact Section */
-  #contact { background: var(--dark); padding: 7rem 4rem; color: var(--bg-light); }
-  #contact .inner { max-width: 900px; margin: 0 auto; }
-  #contact .section-label { color: var(--bg-light); }
-  .contact-heading { font-family: 'Jost', sans-serif; font-size: clamp(1.8rem, 3vw, 2.5rem); font-weight: 400; color: var(--bg-light); margin-bottom: 3rem; letter-spacing: 0.02em; line-height: 1.3;}
+  #contact { background: var(--primary); padding: 7rem 2rem; }
+  #contact .inner { max-width: 820px; margin: 0 auto; text-align: center; }
+  .contact-heading { font-family: 'Jost', sans-serif; font-size: clamp(1.4rem, 3vw, 2rem); font-weight: 300; color: var(--bg-light); margin-bottom: 2.5rem; letter-spacing: 0.05em; line-height: 1.4;}
   
-  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2rem; text-align: left; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem; text-align: left; }
   .form-field { display: flex; flex-direction: column; gap: 0.5rem; }
-  .form-field label { font-family: 'Jost', sans-serif; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-muted-light); }
+  .form-field label { font-family: 'Jost', sans-serif; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-muted-light); }
   .form-field input, .form-field textarea { background: rgba(248, 247, 244, 0.05); border: 1px solid rgba(248, 247, 244, 0.2); border-radius: 2px; padding: 1rem; color: var(--bg-light); font-family: 'Jost', sans-serif; font-size: 1rem; outline: none; transition: border-color 0.2s; width: 100%; }
   .form-field input:focus, .form-field textarea:focus { border-color: var(--accent); }
   .form-field textarea { resize: vertical; min-height: 130px; }
   .form-full { grid-column: 1 / -1; }
   
-  .submit-btn { padding: 1rem 3rem; background: var(--accent); color: var(--bg-light); font-family: 'Jost', sans-serif; font-size: 0.85rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; border: none; border-radius: 2px; cursor: pointer; transition: background 0.2s; }
+  .submit-btn { margin-top: 1.5rem; padding: 1rem 3rem; background: var(--accent); color: var(--bg-light); font-family: 'Jost', sans-serif; font-size: 0.85rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; border: none; border-radius: 2px; cursor: pointer; transition: background 0.2s; }
   .submit-btn:hover { background: #b84734; }
 
-  footer { background: #0c1828; text-align: center; padding: 2.5rem; font-family: 'Jost', sans-serif; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(248, 247, 244, 0.4); }
+  footer { background: var(--dark); text-align: center; padding: 2.5rem; font-family: 'Jost', sans-serif; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(248, 247, 244, 0.3); }
 
   /* Mobile Responsiveness */
   @media (max-width: 768px) {
     nav { padding: 1rem 1.5rem; }
     .nav-links { display: none; }
-    #hero { padding: 8rem 1.5rem 4rem; }
-    section, #contact { padding: 5rem 1.5rem; }
-    .divider { margin: 0 1.5rem; }
-    .grid-3, .grid-2x2 { grid-template-columns: 1fr; gap: 2.5rem; margin-top: 2.5rem; }
-    .form-row { grid-template-columns: 1fr; gap: 1.5rem; }
+    section { padding: 5rem 1.5rem; }
+    .grid-2x2 { grid-template-columns: 1fr; gap: 2.5rem; margin-top: 2.5rem; }
+    .form-row { grid-template-columns: 1fr; gap: 1rem; }
   }
 </style>
 </head>
@@ -175,10 +164,13 @@
 </nav>
 
 <div id="hero">
-  <div class="hero-content">
-    <h1 class="hero-headline">Disinformation is Now a Business Risk</h1>
-    <p class="hero-tagline">We help businesses prepare for and defend themselves from narrative attacks</p>
-    <a href="#contact" class="hero-cta">Inquire About Engagement</a>
+  <h1 class="hero-headline">Disinformation is Now a Business Risk</h1>
+  <div class="hero-accent-bar"></div>
+  <p class="hero-tagline">We help businesses prepare for and defend themselves from narrative attacks</p>
+  
+  <div class="scroll-hint">
+    <span>Scroll</span>
+    <div class="scroll-arrow"></div>
   </div>
 </div>
 
@@ -204,7 +196,7 @@
 
 <section id="what">
   <div class="section-label">What We Do</div>
-  <div class="grid-3">
+  <div class="grid-2x2">
     <div class="what-item">
       <h3>Audit</h3>
       <p>Information risk audit to identify vulnerabilities to information manipulation and current capabilities.</p>
@@ -228,7 +220,6 @@
     <div class="team-item">
       <img src="adelal.png" alt="Dr. Adela Levis" class="team-photo">
       <div class="team-name">Dr. Adela Levis</div>
-      <div class="team-title">Architect</div>
       <div class="team-bio">A key architect of counter-disinformation capabilities in national security, advising governments and NGOs on information resilience and strategic communications.</div>
     </div>
     <div class="team-item">
@@ -254,7 +245,7 @@
 
 <div id="contact">
   <div class="inner">
-    <div class="section-label">Connect</div>
+    <div class="section-label" style="color: var(--bg-light);">Connect</div>
     <div class="contact-heading">Ready to build your resilience?<br>Let’s connect.</div>
     <form action="#" method="POST">
       <div class="form-row">
