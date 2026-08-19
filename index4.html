@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head> 
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AJAC Info Integrity</title>
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --navy: #0d2551;
+    --navy-light: #112660;
+    --gold: #ffc300;
+    --white: #ffffff;
+    --text-muted: rgba(255,255,255,0.55);
+  }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Jost', sans-serif; background: var(--navy); color: var(--white); font-size: 17px; line-height: 1.7; }
+
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.25rem 4rem;
+    background: rgba(13,37,81,0.95); backdrop-filter: blur(8px);
+    border-bottom: 1px solid rgba(255,195,0,0.2);
+  }
+  .nav-logo { font-family: 'Jost', sans-serif; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.25em; color: var(--gold); text-decoration: none; text-transform: uppercase; }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a { font-family: 'Jost', sans-serif; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--gold); }
+
+  #hero {
+    min-height: 100vh; display: flex; flex-direction: column;
+    justify-content: center; align-items: center; text-align: center;
+    padding: 5rem 2rem 0; background: var(--navy); overflow: hidden;
+  }
+  .hero-title {
+    font-family: 'Jost', sans-serif; font-size: clamp(2.5rem, 5vw, 4.5rem);
+    font-weight: 700; color: var(--white); text-transform: uppercase; letter-spacing: 0.1em;
+    margin-bottom: 1rem; opacity: 0; animation: fadeUp 1s ease forwards 1.2s;
+  }
+  .hero-gold-bar { width: 100px; height: 6px; background: var(--gold); flex-shrink: 0; opacity: 0; animation: fadeUp 0.8s ease forwards 0.2s; margin-bottom: 2rem; }
+  .hero-tagline {
+    font-family: 'Jost', sans-serif; font-size: clamp(1rem, 2.2vw, 1.4rem);
+    font-weight: 700; color: var(--gold); letter-spacing: 0.18em; text-transform: uppercase;
+    padding: 0 2rem 3rem; opacity: 0; animation: fadeUp 1s ease forwards 1.8s; max-width: 900px; line-height: 1.5;
+  }
+  .hero-subtagline {
+    display: block; font-size: 0.65em; font-weight: 300; opacity: 0.9; letter-spacing: 0.1em; text-transform: none; margin-top: 1.5rem; color: var(--white);
+  }
+  .scroll-hint { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; opacity: 0; animation: fadeUp 1s ease forwards 1.5s; padding-bottom: 2.5rem; }
+  .scroll-hint span { font-family: 'Jost', sans-serif; font-size: 0.65rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--text-muted); }
+  .scroll-arrow { width: 1px; height: 36px; background: linear-gradient(to bottom, var(--gold), transparent); animation: scrollPulse 2s ease-in-out infinite; }
+  
+  @keyframes scrollPulse { 0%,100%{opacity:0.3;} 50%{opacity:1;} }
+  @keyframes fadeUp { from{opacity:0;transform:translateY(16px);} to{opacity:1;transform:translateY(0);} }
+
+  section { padding: 7rem 2rem; max-width: 820px; margin: 0 auto; }
+  .section-label {
+    font-family: 'Jost', sans-serif; font-size: clamp(2.2rem, 5vw, 3.5rem);
+    font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 1.75rem; line-height: 1.2;
+  }
+  .section-text {
+    font-family: 'Jost', sans-serif; font-size: clamp(1.15rem, 2.5vw, 1.45rem);
+    font-weight: 300; line-height: 1.75; color: rgba(255,255,255,0.88); margin-bottom: 1.25rem;
+  }
+  .divider { max-width: 820px; margin: 0 auto; height: 1px; background: rgba(255,195,0,0.15); }
+
+  /* Grid for What We Do */
+  .services-grid { display: grid; grid-template-columns: 1fr; gap: 2rem; margin-top: 2.5rem; }
+  .service-card h3 { color: var(--gold); font-size: 1.2rem; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.5rem; }
+  
+  /* Layout for Team */
+  .team-list { display: flex; flex-direction: column; gap: 2.5rem; margin-top: 2rem; }
+  .team-member h3 { color: var(--gold); font-size: 1.2rem; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.2rem; }
+  .team-member p { font-size: clamp(1.1rem, 2vw, 1.3rem); font-weight: 300; color: rgba(255,255,255,0.88); }
+
+  .strip-section { max-width: 820px; margin: 0 auto; padding: 0 2rem 5rem; }
+  .strip-label { font-family: 'Jost', sans-serif; font-size: 0.68rem; font-weight: 500; letter-spacing: 0.28em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 1.25rem; }
+  .strip-label.gold { font-size: 1.1rem; font-weight: 600; color: var(--gold); letter-spacing: 0.2em; margin-top: 3rem; }
+  .client-strip { display: flex; flex-wrap: wrap; gap: 0.6rem 1.2rem; margin-bottom: 3rem; }
+  .client-name { font-family: 'Jost', sans-serif; font-size: 0.82rem; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.4); transition: color 0.2s; }
+  .client-name:hover { color: rgba(255,255,255,0.75); }
+  .client-sep { color: rgba(255,195,0,0.3); font-size: 0.7rem; line-height: 2; }
+
+  #how { background: var(--navy-light); max-width: 100%; padding: 7rem 2rem; border-top: 1px solid rgba(255,195,0,0.15); border-bottom: 1px solid rgba(255,195,0,0.15); }
+  #how .inner { max-width: 820px; margin: 0 auto; }
+  .contact-heading { font-family: 'Jost', sans-serif; font-size: clamp(1.4rem, 3vw, 2rem); font-weight: 300; color: var(--white); margin-bottom: 2.5rem; letter-spacing: 0.05em; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+  .form-field { display: flex; flex-direction: column; gap: 0.4rem; }
+  .form-field label { font-family: 'Jost', sans-serif; font-size: 0.68rem; font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase; color: var(--text-muted); }
+  .form-field input, .form-field textarea { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,195,0,0.2); border-radius: 2px; padding: 0.75rem 1rem; color: var(--white); font-family: 'Jost', sans-serif; font-size: 0.95rem; outline: none; transition: border-color 0.2s; width: 100%; }
+  .form-field input:focus, .form-field textarea:focus { border-color: rgba(255,195,0,0.7); }
+  .form-field textarea { resize: vertical; min-height: 130px; }
+  .form-full { grid-column: 1 / -1; }
+  .submit-btn { margin-top: 1.25rem; padding: 0.85rem 2.5rem; background: var(--gold); color: var(--navy); font-family: 'Jost', sans-serif; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; border: none; border-radius: 2px; cursor: pointer; transition: background 0.2s; }
+  .submit-btn:hover { background: #ffd233; }
+  .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  .fs-error-msg { color: #ff6b6b; font-size: 0.8rem; margin-top: 0.3rem; }
+  .fs-success-msg { color: var(--gold); font-size: 1.1rem; margin-bottom: 1.5rem; padding: 1rem; border: 1px solid var(--gold); background: rgba(255,195,0,0.05); border-radius: 3px; }
+
+  footer { text-align: center; padding: 2.5rem; font-family: 'Jost', sans-serif; font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.2); }
+
+  .pub-link { display: inline-flex; flex-direction: column; align-items: flex-start; gap: 0.2rem; }
+  .pub-link a { font-family: 'Jost', sans-serif; font-size: 0.75rem; font-weight: 400; letter-spacing: 0.08em; color: rgba(255,195,0,0.6); text-decoration: none; transition: color 0.2s; }
+  .pub-link a:hover { color: var(--gold); }
+  .pub-sub-links { display: flex; gap: 0.75rem; }
+
+  @media (max-width: 640px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; } /* Consider a mobile menu for smaller screens */
+    .form-row { grid-template-columns: 1fr; }
+    section { padding: 5rem 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#hero" class="nav-logo">AJAC Info Integrity</a>
+  <ul class="nav-links">
+    <li><a href="#why">Why</a></li>
+    <li><a href="#who">Who</a></li>
+    <li><a href="#what">What</a></li>
+    <li><a href="#team">Team</a></li>
+    <li><a href="#how">Contact</a></li>
+  </ul>
+</nav>
+
+<div id="hero">
+  <h1 class="hero-title">AJAC Info Integrity</h1>
+  <div class="hero-gold-bar"></div>
+  <p class="hero-tagline">
+    Disinformation is Now Business Risk
+    <span class="hero-subtagline">We help high-exposure organizations neutralize information threats with confidence.</span>
+  </p>
+  <div class="scroll-hint">
+    <div class="scroll-arrow"></div>
+  </div>
+</div>
+
+<section id="why">
+  <div class="section-label">Why AJAC Info Integrity Exists</div>
+  <p class="section-text">In the last decade, AI-powered manipulation, aggressive geopolitical actors, a collapse in trust, and coordinated cross-platform operations have created a threat landscape that no existing solution fully addresses.</p>
+  <p class="section-text">The existing toolkit - public relations, cybersecurity, and social media monitoring - was built for a different era.</p>
+  <p class="section-text">At the same time, mis/disinformation is the World Economic Forum's #2 global short-term risk, above even economic shocks. Every business, government, and civic actor is exposed.</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="who">
+  <div class="section-label">Who We Work With</div>
+  <p class="section-text">AJAC helps high-exposure organizations build systems to mitigate narrative and information risks. We leverage deep expertise to bridge the gap between threat detection and strategic response. Our method is designed for organizations facing multi-faceted exposure to geopolitical, social, and synthetic narrative threats.</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="what">
+  <div class="section-label">What we do</div>
+  <div class="services-grid">
+    <div class="service-card">
+      <h3>Assess</h3>
+      <p class="section-text">We identify your specific information manipulation or disinformation vulnerabilities and evaluate the effectiveness of your current response infrastructure.</p>
+    </div>
+    <div class="service-card">
+      <h3>Build</h3>
+      <p class="section-text">We build custom standardized workflows and training systems for your organization to maintain a permanent and repeatable internal and external response capability, tailored to your unique risk profile and industry.</p>
+    </div>
+    <div class="service-card">
+      <h3>Connect</h3>
+      <p class="section-text">We provide access to a specialized, global network of experts and frameworks to facilitate coordinated and informed action to reduce and mitigate risks that undermine your core mission.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section id="team">
+  <div class="section-label">Our Team</div>
+  <p class="section-text" style="color: var(--gold); font-weight: 500;">Built on the front lines of the information war.</p>
+  
+  <div class="team-list">
+    <div class="team-member">
+      <h3>Dr. Adela Levis</h3>
+      <p>University of Michigan Instructor &amp; former US Diplomat. A key architect of counter-disinformation capabilities in national security, advising governments and NGOs on information resilience and strategic communications.</p>
+    </div>
+    <div class="team-member">
+      <h3>Adam Fivenson</h3>
+      <p>Principal, Five Suns Global Consulting, C-Suite advisor to ambassadors and government ministers on information risk and AI for strategic communication. Non-Resident Fellow at American University's Center for Security, Innovation and New Technology.</p>
+    </div>
+    <div class="team-member">
+      <h3>Jen Rosiere Reynolds</h3>
+      <p>Specialist in large-scale monitoring and decision-making frameworks under uncertainty. Former intelligence officer for special operations. Director, The Accelerator at Princeton University.</p>
+    </div>
+    <div class="team-member">
+      <h3>Dr. Chris Beall</h3>
+      <p>Advisor to governments and businesses on applying disinformation-response frameworks to strengthen resilience and respond to information threats. Former government executive, President of QuietWire and Chief Relationship Officer at the DISARM Foundation.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<div class="strip-section">
+  <div class="strip-label gold">As seen in</div>
+  <div class="client-strip press-strip">
+    <span class="pub-link">
+      <span class="client-name">Washington Post</span>
+      <span class="pub-sub-links">
+        <a href="https://www.washingtonpost.com/opinions/2023/03/29/russia-disinformation-ukraine-bio-labs/" target="_blank">Article 1 ↗</a>
+        <a href="https://www.washingtonpost.com/opinions/2024/08/19/russia-iran-ai-disinformation-election/" target="_blank">Article 2 ↗</a>
+      </span>
+    </span><span class="client-sep">·</span>
+    <span class="pub-link">
+      <span class="client-name">Tech Policy Press</span>
+      <a href="https://www.techpolicy.press/the-past-present-and-future-of-the-us-information-integrity-field/" target="_blank">Listen ↗</a>
+    </span><span class="client-sep">·</span>
+    <span class="pub-link">
+      <span class="client-name">Just Security</span>
+      <a href="https://www.justsecurity.org/85200/one-year-later-lessons-from-ukraine-in-fighting-disinformation/" target="_blank">Read ↗</a>
+    </span><span class="client-sep">·</span>
+    <span class="pub-link">
+      <span class="client-name">TVP World</span>
+      <a href="https://www.youtube.com/watch?v=jDeFvvivGYw" target="_blank">Watch 1 ↗</a>
+        <a href="https://www.youtube.com/watch?v=Q0UfrpFRKA4" target="_blank">Watch 2 ↗</a>
+    </span><span class="client-sep">·</span>
+    <span class="pub-link">
+      <span class="client-name">Cognitive Crucible</span>
+      <a href="https://information-professionals.org/episode/episode-cognitive-crucible-episode-169/" target="_blank">Listen ↗</a>
+    </span><span class="client-sep">·</span>
+    <span class="pub-link">
+      <span class="client-name">This is HCD</span>
+      <a href="https://www.thisishcd.com/episodes/adam-fivenson-using-a-human-centered-design-approach-to-design-foreign-aid-programs" target="_blank">Listen ↗</a>
+    </span><span class="client-sep">·</span>
+    <span class="pub-link">
+      <span class="client-name">ICTWorks</span>
+      <a href="https://www.ictworks.org/author/adam-fivenson/" target="_blank">Read ↗</a>
+    </span>
+  </div>
+</div>
+
+<div id="how">
+  <div class="inner">
+    <div class="section-label" style="font-size: clamp(1.8rem, 4vw, 2.5rem);">Respond to Narrative and Information Threats with Confidence</div>
+    <p class="contact-heading">Let's talk about your information risks</p>
+    
+    <!-- Formspree Alert Messages -->
+    <div data-fs-success class="fs-success-msg" style="display: none;">Thank you for reaching out! We'll be in touch shortly.</div>
+    <div data-fs-error class="fs-error-msg" style="display: none; font-size: 1.1rem; margin-bottom: 1.5rem;">There was an issue submitting your form. Please check the fields below.</div>
+
+    <!-- Contact Form via Vanilla JS Ajax Integration -->
+    <form id="contact-form">
+      <div class="form-row">
+        <div class="form-field">
+          <label for="name">Name</label>
+          <input type="text" id="name" name="name" required placeholder="Your name" data-fs-field>
+          <span class="fs-error-msg" data-fs-error="name"></span>
+        </div>
+        <div class="form-field">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" required placeholder="your@email.com" data-fs-field>
+          <span class="fs-error-msg" data-fs-error="email"></span>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-field form-full">
+          <label for="message">Message</label>
+          <textarea id="message" name="message" required placeholder="What's on your mind?" data-fs-field></textarea>
+          <span class="fs-error-msg" data-fs-error="message"></span>
+        </div>
+      </div>
+      <button type="submit" class="submit-btn" data-fs-submit-btn>Send Message</button>
+    </form>
+  </div>
+</div>
+
+<footer>
+  &copy; 2026 AJAC Info Integrity &nbsp;&middot;&nbsp; Contact form submissions are used solely to respond to your inquiry and are never shared.
+</footer>
+
+<!-- Formspree AJAX Script Configuration -->
+<script>
+  window.formspree = window.formspree || function () { (formspree.q = formspree.q || []).push(arguments); };
+  formspree('initForm', { formElement: '#contact-form', formId: 'meajvlnp' });
+</script>
+<script src="https://unpkg.com/@formspree/ajax@1" defer></script>
+
+</body>
+</html>
